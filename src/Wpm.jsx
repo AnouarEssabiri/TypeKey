@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+// import './App.css';
 
 const sampleText = "The quick brown fox jumps over the lazy dog"; // Example text
 
-function App() {
+function Wpm() {
     const [inputText, setInputText] = useState('');
     const [startTime, setStartTime] = useState(null);
     const [result, setResult] = useState(null);
@@ -58,4 +58,4 @@ function App() {
     );
 }
 
-export default App;
+export default Wpm;
