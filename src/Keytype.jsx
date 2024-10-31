@@ -1,56 +1,103 @@
-import React, { useEffect, useRef, useState } from "react";
-import Splitting from "splitting";
-// import "splitting/dist/splitting.css"; // Ensure you have the CSS file for Splitting.js
+import React, { useState, useEffect } from "react";
 
-function TypingEffect() {
-  const headingRef = useRef(null);
-  const [currentIndex, setCurrentIndex] = useState(0); // Track the current character index
-  const [incorrectKey, setIncorrectKey] = useState(null);
+const TypingTest = () => {
+  const [text, setText] = useState("");
+  const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
+  const [mistakes, setMistakes] = useState(0);
+  const [mistakeIndices, setMistakeIndices] = useState([]);
+  const [startTime, setStartTime] = useState(null);
+  const [wpm, setWpm] = useState(0);
+
+  // Fetch a single random quote
+  const fetchRandomQuote = () => {
+    fetch("https://dummyjson.com/quotes")
+      .then((response) => response.json())
+      .then((data) => {
+        const randomQuote = data.quotes[Math.floor(Math.random() * data.quotes.length)].quote;
+        setText(randomQuote);
+        setCurrentLetterIndex(0);
+        setMistakes(0);
+        setMistakeIndices([]);
+        setStartTime(null);
+        setWpm(0);
+      });
+  };
 
   useEffect(() => {
-    // Initialize Splitting with character splitting
-    Splitting({ target: headingRef.current, by: "chars" });
+    fetchRandomQuote(); // Fetch a quote on component mount
+  }, []);
 
-    const handleKeyDown = (event) => {
-      const keyPressed = event.key;
-      const spans = headingRef.current.querySelectorAll("span");
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      const typedLetter = event.key;
 
-      // Reset all spans to the default color
-      spans.forEach((span, index) => {
-        if (index < currentIndex) {
-          span.style.color = "green"; // Previously typed characters
-        } else {
-          span.style.color = "black"; // Default color for untyped characters
-        }
-      });
+      if (startTime === null) {
+        setStartTime(Date.now()); // Start timer on first key press
+      }
 
-      // Check if the current character matches the pressed key
-      if (spans[currentIndex] && spans[currentIndex].textContent === keyPressed) {
-        spans[currentIndex].style.color = "green"; // Correct match
-        setCurrentIndex((prevIndex) => prevIndex + 1); // Move to the next character
-        setIncorrectKey(null); // Reset incorrect key state
+      if (typedLetter === text[currentLetterIndex]) {
+        setCurrentLetterIndex((prevIndex) => prevIndex + 1);
       } else {
-        spans[currentIndex].style.color = "red"; // Incorrect match for current character
-        setIncorrectKey(keyPressed); // Display incorrect key message
+        setMistakes((prevMistakes) => prevMistakes + 1);
+        setMistakeIndices((prevIndices) => [...prevIndices, currentLetterIndex]);
+        setCurrentLetterIndex((prevIndex) => prevIndex + 1); // Move to the next character
+      }
+
+      // Check if the user has finished typing
+      if (currentLetterIndex + 1 === text.length) {
+        calculateWPM();
+        setTimeout(() => {
+          fetchRandomQuote(); // Refresh the quote
+        }, 2000); // Change this value to set how long to wait before refreshing (in milliseconds)
       }
     };
 
-    // Add keydown event listener
-    window.addEventListener("keydown", handleKeyDown);
-
+    window.addEventListener("keypress", handleKeyPress);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keypress", handleKeyPress);
     };
-  }, [currentIndex]); // Rerun effect when currentIndex changes
+  }, [currentLetterIndex, mistakes, startTime, text]);
+
+  const calculateWPM = () => {
+    const endTime = Date.now();
+    const timeTakenInMinutes = (endTime - startTime) / 60000; // Convert milliseconds to minutes
+    const typedWords = Math.floor(currentLetterIndex / 5); // Approximate WPM calculation
+    setWpm(Math.round(typedWords / timeTakenInMinutes));
+  };
 
   return (
-    <div>
-      <h1 ref={headingRef} data-splitting="chars" style={{ fontSize: "2em" }}>
-        Split by chars (default)
-      </h1>
-      {incorrectKey && <p style={{ color: "red" }}>Incorrect character: {incorrectKey}</p>}
+    <div className="typezone">
+      <h1>TRY TO TYPE FAST AS YOU CAN</h1>
+      <p className="text">
+        {text.split("").map((char, index) => (
+          <span
+            key={index}
+            style={{
+              color:
+                index < currentLetterIndex
+                  ? mistakeIndices.includes(index)
+                    ? "red" // Mistyped characters in red
+                    : "green" // Correctly typed characters in green
+                  : "#ccc", // Remaining characters in gray
+              backgroundColor: index === currentLetterIndex ? "rgba(255, 255, 255, 0.3)" : "transparent", // Highlight current character
+              transition: "background-color 0.1s", // Smooth transition for highlight
+            }}
+          >
+            {char}
+          </span>
+        ))}
+      </p>
+      <div className="zoneinfo">
+        <p className="Mistake">
+          MISTAKES <span>{mistakes}</span>
+        </p>
+        <p className="WPM">
+          WPM <span>{wpm}</span>
+        </p>
+      </div>
+      <button className="refresh" onClick={fetchRandomQuote}>↺</button>
     </div>
   );
-}
+};
 
-export default TypingEffect;
+export default TypingTest;
