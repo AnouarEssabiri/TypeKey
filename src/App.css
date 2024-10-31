@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: black;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -61,7 +61,8 @@
   font-weight: bolder;
 }
 .refresh{
-  background-color: #242424;
+  background-color: transparent;
+  color: #b2afaf9d;
   border: none;
   font-size: 5rem;
   color: white;

@@ -76,11 +76,17 @@ const TypingTest = () => {
               color:
                 index < currentLetterIndex
                   ? mistakeIndices.includes(index)
-                    ? "red" // Mistyped characters in red
-                    : "green" // Correctly typed characters in green
-                  : "#ccc", // Remaining characters in gray
+                    ? "red" 
+                    : "white" 
+                  : "#b2afaf9d", 
               backgroundColor: index === currentLetterIndex ? "rgba(255, 255, 255, 0.3)" : "transparent", // Highlight current character
-              transition: "background-color 0.1s", // Smooth transition for highlight
+              transition: "background-color 0.1s",
+              fontWeight:
+              index < currentLetterIndex
+                ? mistakeIndices.includes(index)
+                  ? "bold" 
+                  : "bolder" 
+                : "light", 
             }}
           >
             {char}
