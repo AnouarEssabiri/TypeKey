@@ -46,4 +46,4 @@ Make sure you have Node.js and npm installed.
 4. **Start the development server**:
    ```bash
    npm run dev
-5. **Open your browser** and go to http://localhost:3000 to see the app in action.
+5. **Open your browser** and go to http://localhost:5173 to see the app in action.
