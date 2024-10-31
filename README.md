@@ -38,18 +38,12 @@ Make sure you have Node.js and npm (or Yarn) installed.
    ```bash
    git clone https://github.com/AnouarEssabiri/TypeKey.git
 2. **Navigate to the project directory**:
-    ```bash
-    cd TypeKey
+   ```bash
+   cd TypeKey
 3. **Install the dependencies**:
-    ```bash
-    npm install
-**or if you're using Yarn**:
-    ```bash
-    yarn install
+   ```bash
+   npm install
 4. **Start the development server**:
-    ```bash
-    npm start
-**or with Yarn**:
-    ```bash
-    yarn start
+   ```bash
+   npm run dev
 5. **Open your browser** and go to http://localhost:3000 to see the app in action.
