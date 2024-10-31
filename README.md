@@ -30,7 +30,7 @@ The primary code for the app is in `TypingTest.js`, which handles:
 
 ### Prerequisites
 
-Make sure you have Node.js and npm (or Yarn) installed.
+Make sure you have Node.js and npm installed.
 
 ### Installation
 
