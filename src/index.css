@@ -23,6 +23,7 @@
     padding: 25px;
     font-size: 2rem;
     width: 75%;
+    font-weight: lighter;
     color: white;
     border-radius: 20px;
     text-align: justify;
@@ -60,12 +61,32 @@
     font-size: 2.5rem;
     font-weight: bolder;
   }
-  .refresh{
+  .refresh {
     background-color: transparent;
-    color: #b2afaf9d;
+    color: white; /* Ensure it's consistently visible */
     border: none;
     font-size: 5rem;
-    color: white;
     cursor: pointer;
     outline: none;
-  }
+    transition: color 0.2s; /* Smooth color transition */
+}
+
+.refresh:hover {
+    color: orange; /* Change on hover */
+    transform: scale(1.1); /* Slightly enlarge */
+}
+
+.refresh:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Add focus outline */
+}
+@media (max-width: 600px) {
+    .text {
+        font-size: 1.5rem; /* Smaller font on mobile */
+        padding: 15px; /* Adjust padding */
+    }
+    .zoneinfo {
+        flex-direction: column; /* Stack info items */
+        align-items: flex-start; /* Align items to the left */
+    }
+}
